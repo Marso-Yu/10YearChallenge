@@ -23,37 +23,43 @@ class ViewController: UIViewController {
         let year = dateFormater.string(from: datePicker.date)
         dateSlider.value = Float(Int(year)!)
         //dateSlider.setValue(Float(Int(year)!), animated: true)
+        showImageView.image = UIImage(named: "Xiaozhi\(year)")
         dateLabel.text = year
 
     }
     @IBAction func dateSliderValueChange(_ sender: Any) {
-
         let year = String(Int(dateSlider.value))
         let date = dateFormater.date(from: year)!
         datePicker.setDate(date, animated: true)
+        showImageView.image = UIImage(named: "Xiaozhi\(year)")
         dateLabel.text = year
-
     }
+    
     @IBAction func autoSwitch(_ sender: Any) {
         if autoSwitch.isOn {
             dateSlider.isEnabled = false
             datePicker.isEnabled = false
-           
+            //var year = String(Int(self.dateSlider.value))
+            var index = Int(self.dateSlider.value + 1)
             timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { (timer) in
-                let year = String(Int(self.dateSlider.value)+1)
+                
+                //reset 2020 to 2011
+                if index > Int(self.dateSlider.maximumValue){
+                    index = 2011
+                }
+                
+                let year = String(index)
+                //datePicker
                 let date = self.dateFormater.date(from: year)!
-                print("date:\(date)")
                 self.datePicker.setDate(date, animated: true)
-                //let year2 = self.dateFormater.string(from: self.datePicker.date)
+                //dateSlider
                 self.dateSlider.value = Float(Int(year)!)
-                //print("year:\(year2)")
+                
+                self.showImageView.image = UIImage(named: "Xiaozhi\(year)")
                 self.dateLabel.text = year
-                if (self.dateSlider.value == 2020.0){
-                    self.dateSlider.value = 2010.0
-                
-                    }
-                
-                    })
+                index += 1
+
+            })
         }
         else {
             dateSlider.isEnabled = true
@@ -64,12 +70,18 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //init
         dateFormater.dateFormat = "yyyy"
-        
-        dateSlider.minimumValue = 2010
+        dateSlider.minimumValue = 2011
         dateSlider.maximumValue = 2020
-        datePicker.minimumDate = dateFormater.date(from: "2010")
+        dateSlider.value = 2020
+        datePicker.minimumDate = dateFormater.date(from: "2011")
         datePicker.maximumDate = dateFormater.date(from: "2020")
+        let date = dateFormater.date(from: "2020")!
+        datePicker.setDate(date, animated: true)
+        showImageView.contentMode = .scaleAspectFit
+        showImageView.image = UIImage(named: "Xiaozhi2011")
+        autoSwitch.isOn = false
         
         // Do any additional setup after loading the view.
     }
