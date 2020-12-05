@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         
     }
     
-    @IBAction func datePickerChanged(_ sender: Any) {
+    @IBAction func datePickerChange(_ sender: Any) {
 //        let today = Date()
 //        print ("today: \(today)")
         let year = dateFormater.string(from: datePicker.date)
